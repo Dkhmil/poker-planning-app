@@ -1,7 +1,5 @@
 package com.khmil.management.web.controller.v1;
 
-import com.khmil.management.dal.entity.UserStoryEntity;
-import com.khmil.management.dal.entity.VoteEntity;
 import com.khmil.management.enums.UserStoryStatus;
 import com.khmil.management.service.UserStoryService;
 import com.khmil.management.service.VoteService;

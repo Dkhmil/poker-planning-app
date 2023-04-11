@@ -1,8 +1,5 @@
 package com.khmil.management.service.impl;
 
-import com.khmil.management.dal.entity.MemberEntity;
-import com.khmil.management.dal.entity.PokerPlanningSessionEntity;
-import com.khmil.management.dal.entity.UserStoryEntity;
 import com.khmil.management.enums.UserStoryStatus;
 import com.khmil.management.dal.repository.MemberRepository;
 import com.khmil.management.dal.repository.PokerPlanningSessionRepository;

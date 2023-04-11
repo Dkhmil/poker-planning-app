@@ -1,6 +1,5 @@
 package com.khmil.management.service;
 
-import com.khmil.management.dal.entity.UserStoryEntity;
 import com.khmil.management.web.model.request.AddUserStoryRequest;
 import com.khmil.management.web.model.response.MemberResponse;
 import com.khmil.management.web.model.request.CreateSessionRequest;

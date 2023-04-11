@@ -1,15 +1,17 @@
 package com.khmil.management.dal.entity;
 
-
-import com.khmil.management.enums.DeckType;
+import com.khmil.management.enums.UserStoryStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -21,36 +23,29 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Table(name = "poker_planning_sessions")
-public class PokerPlanningSessionEntity {
-
+@Entity
+@Table(name = "USER_STORIES")
+public class UserStory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "session_id", nullable = false, unique = true)
-    private String sessionId;
+    @Column(nullable = false)
+    private String description;
 
-    @Column(name = "title", nullable = false)
-    private String title;
-
-    @Column(name = "deck_type", nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private DeckType deckType;
+    private UserStoryStatus status;
 
-    @Column(name = "invite_link", nullable = false)
-    private String inviteLink;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "session_id", nullable = false)
+    private PokerPlanningSession session;
 
-    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL)
-    private List<MemberEntity> members = new ArrayList<>();
-
-    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL)
-    private List<UserStoryEntity> userStories = new ArrayList<>();
-
+    @OneToMany(mappedBy = "userStory", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vote> userStories = new ArrayList<>();
 }

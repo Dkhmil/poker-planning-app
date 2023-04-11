@@ -1,6 +1,5 @@
 package com.khmil.management.service.impl;
 
-import com.khmil.management.dal.entity.UserStoryEntity;
 import com.khmil.management.dal.repository.MemberRepository;
 import com.khmil.management.dal.repository.UserStoryRepository;
 import com.khmil.management.enums.UserStoryStatus;

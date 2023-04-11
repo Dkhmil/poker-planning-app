@@ -2,6 +2,7 @@ package com.khmil.management.dal.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,25 +17,24 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-@Table(name = "votes")
-public class VoteEntity {
-
+@Table(name = "VOTES")
+public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private MemberEntity user;
-
-    @ManyToOne
-    @JoinColumn(name = "user_story_id", nullable = false)
-    private UserStoryEntity userStory;
-
-    @Column(name = "value", nullable = false)
+    @Column(nullable = false)
     private Integer value;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_story_id", nullable = false)
+    private UserStory userStory;
 }
