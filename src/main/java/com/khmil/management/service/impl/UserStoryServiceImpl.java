@@ -12,6 +12,8 @@ import com.khmil.management.enums.UserStoryStatus;
 import com.khmil.management.exception.ResourceNotFoundException;
 import com.khmil.management.service.UserStoryService;
 import com.khmil.management.web.model.UserStoryVotationStatus;
+import com.khmil.management.web.model.response.VoteResult;
+import com.khmil.management.web.model.response.VoteSummary;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,8 +34,8 @@ public class UserStoryServiceImpl implements UserStoryService {
 
     @Override
     @Transactional
-    public void startVoting(Long sessionId, Long userStoryId) {
-        PokerPlanningSession session = getSessionById(sessionId);
+    public void startVoting(Long userStoryId) {
+        PokerPlanningSession session = getSessionByUserStoryId(userStoryId);
         UserStory userStory = userStoryRepository.findById(userStoryId)
                 .orElseThrow(() -> new ResourceNotFoundException(userStoryId));
         userStory.setStatus(UserStoryStatus.VOTING);
@@ -43,10 +45,10 @@ public class UserStoryServiceImpl implements UserStoryService {
 
     @Override
     @Transactional
-    public void submitVote(Long sessionId, Long userStoryId, String voterName, int voteOption) {
-        PokerPlanningSession session = getSessionById(sessionId);
+    public VoteResult submitVote(Long userStoryId, String voterName, int voteOption) {
+        PokerPlanningSession session = getSessionByUserStoryId(userStoryId);
         if (session == null) {
-            throw new ResourceNotFoundException(sessionId);
+            throw new ResourceNotFoundException(userStoryId);
         }
         User user = userRepository.findByName(voterName).get();
 
@@ -54,20 +56,30 @@ public class UserStoryServiceImpl implements UserStoryService {
                 .orElseThrow(() -> new ResourceNotFoundException(userStoryId));
 
         if (!session.getUserStories().contains(userStory)) {
-            throw new IllegalArgumentException("User story not found in session with id " + sessionId);
+            throw new IllegalArgumentException("User story not found in session with id " + session.getId());
         }
 
         if (!session.getUsers().contains(user)) {
-            throw new IllegalArgumentException("User is not a participant in session with id " + sessionId);
+            throw new IllegalArgumentException("User is not a participant in session with id " + session.getId());
         }
         Vote vote = Vote.builder()
                 .value(voteOption)
                 .userStory(userStory)
                 .user(user)
                 .build();
+        if (userStory.getVotes().stream().map(v -> v.getUser().getName()).collect(Collectors.toSet()).contains(voterName)) {
+            throw new RuntimeException("user already voted");
+        }
+        if (!userStory.getStatus().equals(UserStoryStatus.VOTING)) {
+            throw new RuntimeException("Voting is not permitted");
+        }
         userStory.getVotes().add(vote);
         userStoryRepository.save(userStory);
         sessionRepository.save(session);
+        return VoteResult.builder()
+                .voteCount(userStory.getVotes().size())
+                .voters(userStory.getVotes().stream().map(v -> v.getUser().getName()).toList())
+                .build();
     }
     @Override
     public UserStoryVotationStatus getUserStoryVotationStatus(Long userStoryId) {
@@ -89,7 +101,7 @@ public class UserStoryServiceImpl implements UserStoryService {
     }
 
     @Override
-    public void stopVoting(Long userStoryId) {
+    public VoteSummary stopVoting(Long userStoryId) {
         UserStory userStory = userStoryRepository.findById(userStoryId)
                 .orElseThrow(() -> new ResourceNotFoundException(userStoryId));
 
@@ -98,6 +110,7 @@ public class UserStoryServiceImpl implements UserStoryService {
         }
         userStory.setStatus(UserStoryStatus.VOTED);
         userStoryRepository.save(userStory);
+        return new VoteSummary(userStory.getVotes());
     }
 
 
@@ -131,9 +144,8 @@ public class UserStoryServiceImpl implements UserStoryService {
         }
     }
 
-    private PokerPlanningSession getSessionById(Long id) {
-        return sessionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Session not found with id " + id));
+    private PokerPlanningSession getSessionByUserStoryId(Long id) {
+        UserStory userStory = userStoryRepository.findById(id).orElseThrow();
+        return userStory.getSession();
     }
-
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PokerPlanningSessionService {
     PokerPlanningSession createSession(String title, DeckType deckType); // +
-    PokerPlanningSession addUser(Long sessionId, Long userId);     // +
+    PokerPlanningSession addUser(Long sessionId, String userName);     // +
     PokerPlanningSession removeUser(Long sessionId, Long userId);
     PokerPlanningSession getSessionById(Long id);
     PokerPlanningSession updateSession(PokerPlanningSession session);

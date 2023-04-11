@@ -45,10 +45,10 @@ public class PokerPlanningSessionServiceImpl implements PokerPlanningSessionServ
 
     @Override
     @Transactional
-    public PokerPlanningSession addUser(Long sessionId, Long userId) {
+    public PokerPlanningSession addUser(Long sessionId, String userId) {
         PokerPlanningSession session = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new EntityNotFoundException("Session not found with id " + sessionId));
-        User user = userRepository.findById(userId)
+        User user = userRepository.findByName(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id " + userId));
         session.getUsers().add(user);
         return sessionRepository.save(session);
