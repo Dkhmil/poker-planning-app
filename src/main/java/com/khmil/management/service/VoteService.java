@@ -1,26 +1,9 @@
 package com.khmil.management.service;
 
-import com.khmil.management.exception.UserStoryNotFoundException;
-import com.khmil.management.web.model.response.VoteResponse;
-
-import java.util.List;
+import com.khmil.management.dal.entity.Vote;
 
 public interface VoteService {
-
-    void castVote(Long userStoryId, int voteValue, Long voterId)
-            throws UserStoryNotFoundException;
-
-    Integer getVoteForUserStoryByMember(Long userStoryId, Long memberId)
-            throws UserStoryNotFoundException;
-
-    int getNumVotesForUserStory(Long userStoryId) throws UserStoryNotFoundException;
-
-    int getSumVotesForUserStory(Long userStoryId) throws UserStoryNotFoundException;
-
-    double getAvgVoteForUserStory(Long userStoryId) throws UserStoryNotFoundException;
-
-    void closeVoting(Long userStoryId) throws UserStoryNotFoundException;
-
-    List<VoteResponse> getVotesByUserStoryId(Long userStoryId);
-
+    Vote startVoting(Long userStoryId); // +
+    Vote vote(Long voteId, Long userId, int value); // +
+    Vote finishVoting(Long voteId);
 }

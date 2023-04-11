@@ -47,5 +47,5 @@ public class UserStory {
     private PokerPlanningSession session;
 
     @OneToMany(mappedBy = "userStory", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Vote> userStories = new ArrayList<>();
+    private List<Vote> votes = new ArrayList<>();
 }
