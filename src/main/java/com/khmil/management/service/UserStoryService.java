@@ -1,4 +1,4 @@
-package com.khmil.management.mapper;
+package com.khmil.management.service;
 
 import com.khmil.management.web.model.request.AddUserStoryRequest;
 import com.khmil.management.web.model.response.UserStoryResponse;

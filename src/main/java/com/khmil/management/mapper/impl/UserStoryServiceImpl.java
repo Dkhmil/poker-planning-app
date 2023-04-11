@@ -1,6 +1,6 @@
 package com.khmil.management.mapper.impl;
 
-import com.khmil.management.mapper.UserStoryService;
+import com.khmil.management.service.UserStoryService;
 import com.khmil.management.web.model.request.AddUserStoryRequest;
 import com.khmil.management.web.model.response.UserStoryResponse;
 
