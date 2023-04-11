@@ -28,13 +28,13 @@ public class Vote {
     private Long id;
 
     @Column(nullable = false)
-    private Integer value;
+    private Long voteOption;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_story_id", nullable = false)
     private UserStory userStory;
 }

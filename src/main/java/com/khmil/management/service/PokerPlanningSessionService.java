@@ -12,7 +12,6 @@ public interface PokerPlanningSessionService {
     PokerPlanningSession getSessionById(Long id);
     PokerPlanningSession updateSession(PokerPlanningSession session);
     void deleteSession(Long id); // +
-    // Submit a vote for a user story
 
     List<PokerPlanningSession> getAllSessions();
 
