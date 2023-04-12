@@ -1,21 +1,19 @@
 package com.khmil.management.web.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-@Builder
+@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class VoteResult {
+public class UserStoryVotationStatus {
 
-    private int voteCount;
+    private int emittedVotes;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> voters;
-
-    private String summary;
+    private List<String> votedMembers;
 
 }

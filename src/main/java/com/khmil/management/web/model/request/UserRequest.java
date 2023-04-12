@@ -1,10 +1,11 @@
 package com.khmil.management.web.model.request;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserRequest {
+
+    @NotBlank
     private String name;
 }

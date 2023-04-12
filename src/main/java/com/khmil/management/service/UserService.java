@@ -1,12 +1,12 @@
 package com.khmil.management.service;
 
-import com.khmil.management.dal.entity.User;
+import com.khmil.management.web.model.response.UserResponse;
 
 import java.util.List;
 
 public interface UserService {
-    User createUser(String name);
-    User getUserByName(String name);
-    List<User> getAllUsers();
+    UserResponse createUser(String name);
+    UserResponse getUserByName(String name);
+    List<UserResponse> getAllUsers();
     void deleteUser(Long userId);
 }

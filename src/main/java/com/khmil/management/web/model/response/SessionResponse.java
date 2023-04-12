@@ -9,13 +9,17 @@ import java.util.List;
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class VoteResult {
+public class SessionResponse {
 
-    private int voteCount;
+    String link;
+
+    Long sessionId;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> voters;
+    List<UserStoryResponse> userStories;
 
-    private String summary;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    List<UserResponse> members;
 
+    String title;
 }

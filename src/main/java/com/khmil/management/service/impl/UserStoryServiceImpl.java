@@ -10,10 +10,12 @@ import com.khmil.management.dal.repository.UserStoryRepository;
 import com.khmil.management.dal.repository.VoteRepository;
 import com.khmil.management.enums.UserStoryStatus;
 import com.khmil.management.exception.ResourceNotFoundException;
+import com.khmil.management.mapper.UserStoryMapper;
 import com.khmil.management.service.UserStoryService;
-import com.khmil.management.web.model.UserStoryVotationStatus;
+import com.khmil.management.web.model.response.UserStoryVotationStatus;
 import com.khmil.management.web.model.request.UserStoryRequest;
 import com.khmil.management.web.model.request.VoteRequest;
+import com.khmil.management.web.model.response.UserStoryResponse;
 import com.khmil.management.web.model.response.VoteResult;
 import com.khmil.management.web.model.response.VoteSummary;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,10 +31,14 @@ import java.util.stream.Collectors;
 public class UserStoryServiceImpl implements UserStoryService {
 
     private final UserStoryRepository userStoryRepository;
+
     private final VoteRepository voteRepository;
+
     private final PokerPlanningSessionRepository sessionRepository;
 
     private final UserRepository userRepository;
+
+    private final UserStoryMapper userStoryMapper;
 
     @Override
     @Transactional
@@ -116,7 +122,7 @@ public class UserStoryServiceImpl implements UserStoryService {
 
 
     @Override
-    public UserStory addUserStory(UserStoryRequest request) {
+    public UserStoryResponse addUserStory(UserStoryRequest request) {
         Long sessionId = request.getSessionId();
         String description = request.getDescription();
         PokerPlanningSession session = sessionRepository.findById(sessionId)
@@ -131,7 +137,7 @@ public class UserStoryServiceImpl implements UserStoryService {
 
         userStoryRepository.save(userStory);
 
-        return userStory;
+        return userStoryMapper.toUserStoryResponse(userStory);
     }
 
     @Override
@@ -148,8 +154,10 @@ public class UserStoryServiceImpl implements UserStoryService {
     }
 
     @Override
-    public UserStory getUserStory(Long id) {
-        return userStoryRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public UserStoryResponse getUserStory(Long id) {
+        return userStoryMapper
+                .toUserStoryResponse(userStoryRepository.findById(id)
+                        .orElseThrow(EntityNotFoundException::new));
     }
 
     private PokerPlanningSession getSessionByUserStoryId(Long id) {

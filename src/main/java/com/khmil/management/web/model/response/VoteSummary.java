@@ -1,5 +1,6 @@
 package com.khmil.management.web.model.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.khmil.management.dal.entity.Vote;
 import lombok.Data;
 
@@ -8,12 +9,21 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class VoteSummary {
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Long> voteValues;
+
     private int totalVotes;
+
     private double averageVote;
+
     private int maxVote;
+
     private int minVote;
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Long> nameValues;
 
     public VoteSummary(List<Vote> votes) {
@@ -26,23 +36,4 @@ public class VoteSummary {
                 .collect(Collectors.toMap(Vote -> Vote.getUser().getName(), Vote::getVoteOption));
     }
 
-    public List<Long> getVotes() {
-        return voteValues;
-    }
-
-    public int getTotalVotes() {
-        return totalVotes;
-    }
-
-    public double getAverageVote() {
-        return averageVote;
-    }
-
-    public int getMaxVote() {
-        return maxVote;
-    }
-
-    public int getMinVote() {
-        return minVote;
-    }
 }

@@ -1,0 +1,118 @@
+openapi: 3.1.0
+info:
+  title: pokerPlanning
+  version: 1.0.0
+paths:
+  /management-api/sessions/{sessionId}/enter:
+    post:
+      summary: Enter Session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          description: OK
+  /management-api/sessions:
+    post:
+      summary: Create Session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                deckType:
+                  type: string
+      responses:
+        '200':
+          description: OK
+  /management-api/users:
+    post:
+      summary: Create User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          description: OK
+  /management-api/user-stories:
+    post:
+      summary: Add User Story
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sessionId:
+                  type: integer
+                description:
+                  type: string
+      responses:
+        '200':
+          description: OK
+  /management-api/user-stories/{userStoryId}/start:
+    get:
+      summary: Start Voting User Story
+      parameters:
+        - name: userStoryId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: sessionId
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: description
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    put:
+      summary: Submit Vote for User Story
+      parameters:
+        - name: userStoryId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: sessionId
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: description
+          in: query
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                voteOption:
+                  type: integer
+                voterName:
+                  type: string
+      responses:
+        '200':
+          description: OK

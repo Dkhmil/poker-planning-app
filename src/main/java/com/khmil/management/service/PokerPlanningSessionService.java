@@ -1,18 +1,13 @@
 package com.khmil.management.service;
 
-import com.khmil.management.dal.entity.PokerPlanningSession;
-import com.khmil.management.enums.DeckType;
-
-import java.util.List;
+import com.khmil.management.web.model.request.SessionRequest;
+import com.khmil.management.web.model.response.SessionResponse;
 
 public interface PokerPlanningSessionService {
-    PokerPlanningSession createSession(String title, DeckType deckType); // +
-    PokerPlanningSession addUser(Long sessionId, String userName);     // +
-    PokerPlanningSession removeUser(Long sessionId, Long userId);
-    PokerPlanningSession getSessionById(Long id);
-    PokerPlanningSession updateSession(PokerPlanningSession session);
-    void deleteSession(Long id); // +
+    SessionResponse createSession(SessionRequest request);
+    SessionResponse addUser(SessionRequest request);
+    SessionResponse getSessionById(Long id);
+    void deleteSession(SessionRequest request);
 
-    List<PokerPlanningSession> getAllSessions();
 
 }

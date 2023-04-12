@@ -5,12 +5,16 @@ server:
 
 spring:
   datasource:
-    url: jdbc:h2:mem:management
+    url: jdbc:h2:file:~/management
     username: admin
     password: admin
     driverClassName: org.h2.Driver
   flyway:
     enabled: true
+    url: jdbc:h2:file:~/management
+    user: admin
+    password: admin
+    locations: ./src/main/resources/db/migration
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:

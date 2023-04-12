@@ -44,13 +44,3 @@ ALTER TABLE votes
 
 ALTER TABLE votes
     ADD CONSTRAINT FK_VOTES_ON_USER_STORY FOREIGN KEY (user_story_id) REFERENCES user_stories (id);
-
-insert
-into poker_planning_sessions
-    (id, deck_type, link, title)
-values (4, 'STANDARD', null, 'some title');
-
-insert
-into users
-    (name)
-values ('Dmytro');

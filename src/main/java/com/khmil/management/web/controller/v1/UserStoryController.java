@@ -1,15 +1,18 @@
 package com.khmil.management.web.controller.v1;
 
-import com.khmil.management.dal.entity.UserStory;
 import com.khmil.management.service.UserStoryService;
-import com.khmil.management.web.model.UserStoryVotationStatus;
 import com.khmil.management.web.model.request.UserStoryRequest;
 import com.khmil.management.web.model.request.VoteRequest;
+import com.khmil.management.web.model.response.SessionResponse;
+import com.khmil.management.web.model.response.UserStoryResponse;
+import com.khmil.management.web.model.response.UserStoryVotationStatus;
 import com.khmil.management.web.model.response.VoteResult;
 import com.khmil.management.web.model.response.VoteSummary;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,45 +30,93 @@ public class UserStoryController {
 
     private final UserStoryService userStoryService;
 
+    @ApiOperation(value = "Create User Story")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = " User Story session created and added to the session",
+                    response = SessionResponse.class),
+            @ApiResponse(code = 400, message = "Bad request - client error"),
+            @ApiResponse(code = 500, message = "Internal error -server error")
+    })
     @PostMapping
-    public ResponseEntity<UserStory> addUserStory(@RequestBody UserStoryRequest request) {
-        UserStory userStory = userStoryService.addUserStory(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userStory);
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserStoryResponse addUserStory(@RequestBody UserStoryRequest request) {
+        return userStoryService.addUserStory(request);
     }
 
+    @ApiOperation(value = "Get User Story by userStoryId")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK  - User Story find"),
+            @ApiResponse(code = 400, message = "Bad request - client error"),
+            @ApiResponse(code = 404, message = "Not Found - Poker Planning session does not exist"),
+            @ApiResponse(code = 500, message = "Internal error -server error")
+    })
     @GetMapping("/{userStoryId}")
-    public ResponseEntity<UserStory> getUserStory(@PathVariable Long userStoryId) {
-        UserStory userStory = userStoryService.getUserStory(userStoryId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userStory);
+    @ResponseStatus(HttpStatus.OK)
+    public UserStoryResponse getUserStory(@PathVariable Long userStoryId) {
+        return userStoryService.getUserStory(userStoryId);
     }
 
+    @ApiOperation(value = "Delete  User Story by userStoryId")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "No content - User Story deleted"),
+            @ApiResponse(code = 400, message = "Bad request - client error"),
+            @ApiResponse(code = 404, message = "Not Found - Poker Planning session does not exist"),
+            @ApiResponse(code = 500, message = "Internal error -server error")
+    })
     @DeleteMapping("/{userStoryId}")
-    public ResponseEntity<Void> deleteUserStory(@PathVariable Long userStoryId) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUserStory(@PathVariable Long userStoryId) {
         userStoryService.deleteUserStory(userStoryId);
-        return ResponseEntity.noContent().build();
     }
 
+    @ApiOperation(value = "Start voting on User Story find by userStoryId")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK - User Story status changed to VOTING"),
+            @ApiResponse(code = 400, message = "Bad request - client error"),
+            @ApiResponse(code = 404, message = "Not Found - Poker Planning session does not exist"),
+            @ApiResponse(code = 500, message = "Internal error -server error")
+    })
     @GetMapping("/{userStoryId}/start")
-    public ResponseEntity<Void> startVoting(@PathVariable Long userStoryId) {
+    @ResponseStatus(HttpStatus.OK)
+    public void startVoting(@PathVariable Long userStoryId) {
         userStoryService.startVoting(userStoryId);
-        return ResponseEntity.ok().build();
     }
 
+    @ApiOperation(value = "Start voting on User Story find by userStoryId")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Created - user vote on user story accepted"),
+            @ApiResponse(code = 400, message = "Bad request - client error"),
+            @ApiResponse(code = 404, message = "Not Found - Poker Planning session does not exist"),
+            @ApiResponse(code = 500, message = "Internal error -server error")
+    })
     @PutMapping("/{userStoryId}/vote")
-    public ResponseEntity<VoteResult> submitVote(@PathVariable Long userStoryId, @RequestBody VoteRequest request) {
-        VoteResult voteResult = userStoryService.submitVote(userStoryId, request);
-        return ResponseEntity.ok(voteResult);
+    @ResponseStatus(HttpStatus.CREATED)
+    public VoteResult submitVote(@PathVariable Long userStoryId, @RequestBody VoteRequest request) {
+        return userStoryService.submitVote(userStoryId, request);
     }
 
+    @ApiOperation(value = "Get User Story status by userStoryId")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK  - User Story status retrieved"),
+            @ApiResponse(code = 400, message = "Bad request - client error"),
+            @ApiResponse(code = 404, message = "Not Found - Poker Planning session does not exist"),
+            @ApiResponse(code = 500, message = "Internal error -server error")
+    })
     @GetMapping("/{userStoryId}/status")
-    public ResponseEntity<UserStoryVotationStatus> getUserStoryVotationStatus(@PathVariable Long userStoryId) {
-        UserStoryVotationStatus status = userStoryService.getUserStoryVotationStatus(userStoryId);
-        return ResponseEntity.ok(status);
+    @ResponseStatus(HttpStatus.OK)
+    public UserStoryVotationStatus getUserStoryVotationStatus(@PathVariable Long userStoryId) {
+        return userStoryService.getUserStoryVotationStatus(userStoryId);
     }
 
+    @ApiOperation(value = "Stop voting for  User Story by userStoryId")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "No content - voting finished"),
+            @ApiResponse(code = 400, message = "Bad request - client error"),
+            @ApiResponse(code = 404, message = "Not Found - Poker Planning session does not exist"),
+            @ApiResponse(code = 500, message = "Internal error -server error")
+    })
     @DeleteMapping("/{userStoryId}/stop")
-    public ResponseEntity<VoteSummary> stopVoting(@PathVariable Long userStoryId) {
-        VoteSummary summary = userStoryService.stopVoting(userStoryId);
-        return ResponseEntity.ok(summary);
+    public VoteSummary stopVoting(@PathVariable Long userStoryId) {
+        return userStoryService.stopVoting(userStoryId);
     }
 }

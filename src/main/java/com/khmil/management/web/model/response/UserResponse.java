@@ -6,16 +6,17 @@ import lombok.Data;
 
 import java.util.List;
 
-@Data
 @Builder
+@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class VoteResult {
+public class UserResponse {
 
-    private int voteCount;
+    Long id;
+
+    String name;
+
+    Long sessionId;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<String> voters;
-
-    private String summary;
-
+    List<Long> voteIds;
 }

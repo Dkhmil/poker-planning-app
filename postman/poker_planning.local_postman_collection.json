@@ -11,8 +11,17 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n     \"name\": \"Dmytro\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:9013/management-api/sessions/1/enter?name=Dmytro",
+					"raw": "http://localhost:9013/management-api/sessions/1/enter",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -23,12 +32,6 @@
 						"sessions",
 						"1",
 						"enter"
-					],
-					"query": [
-						{
-							"key": "name",
-							"value": "Dmytro"
-						}
 					]
 				}
 			},
@@ -41,7 +44,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "{\n     \"title\": \"New Session\",\n     \"deckType\": \"Standart\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -49,7 +52,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:9013/management-api/sessions?title=some title&&deckType=STANDARD",
+					"raw": "http://localhost:9013/management-api/sessions",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -58,20 +61,6 @@
 					"path": [
 						"management-api",
 						"sessions"
-					],
-					"query": [
-						{
-							"key": "title",
-							"value": "some title"
-						},
-						{
-							"key": null,
-							"value": null
-						},
-						{
-							"key": "deckType",
-							"value": "STANDARD"
-						}
 					]
 				}
 			},
@@ -354,8 +343,17 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n     \"confirmation\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:9013/management-api/sessions/1?confirmation=true",
+					"raw": "http://localhost:9013/management-api/sessions/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -365,12 +363,6 @@
 						"management-api",
 						"sessions",
 						"1"
-					],
-					"query": [
-						{
-							"key": "confirmation",
-							"value": "true"
-						}
 					]
 				}
 			},
